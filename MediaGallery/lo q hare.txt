@@ -1,0 +1,37 @@
+🔹 1. Home  Descubrimiento
+HookEndpoint getImagesFull(popular) o temas generales.
+
+✅ Muestra imágenes destacadas o aleatorias por defecto.
+
+⛵ Ideal como landing o galería inicial.
+
+🔹 2. Búsqueda (Search)
+HookEndpoint getImagesFull(query)
+
+✅ El usuario escribe y ve resultados al instante.
+
+🔄 Puede ir con scroll infinito o con resultados limpios.
+
+🔹 3. Temas  Categorías
+Hook getTopics()
+
+✅ Lista visual con categorías tipo “Technology”, “Nature”, “People”...
+
+Al hacer click, haces otra búsqueda filtrada por ese topic.
+
+🔹 4. Usuarios  Fotógrafos destacados
+Hook getUserPhotos(username)
+
+✅ Cuando clickeás un fotógrafo, ves su galería personalizada.
+
+También podés mostrar su bio y redes.
+
+🔹 5. Detalles de imagen
+Hook getImageById(id)
+
+✅ Muestra una imagen en grande + stats (likes, downloads, autor, etc).
+
+🔹 6. Colecciones
+Hook getCollections()
+
+✅ Secciones temáticas creadas por fotógrafos. Tipo “Dark & Moody”, “Minimal”, “Textures”.

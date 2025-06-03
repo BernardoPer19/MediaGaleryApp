@@ -1,0 +1,9 @@
+{
+  "users": [{ "id": 1, "username": "agus", "password": "123456" }],
+  "favorites": [
+    { "id": 1, "userId": 1, "imageId": "abc123", "imageUrl": "https://..." }
+  ],
+  "collections": [
+    { "id": 1, "userId": 1, "title": "Nature", "images": ["abc123", "def456"] }
+  ]
+}
