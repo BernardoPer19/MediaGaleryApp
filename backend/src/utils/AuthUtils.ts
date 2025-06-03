@@ -20,8 +20,10 @@ export const createToken = (user: UserType) => {
   const token = jwt.sign(
     {
       user: {
+        user_id: user.user_id,
         name: user.name,
         email: user.email,
+        createdAt: user.createdAt, // <-- asegurate que esté bien escrito
       },
     },
     process.env.JWT_SECRET as string,

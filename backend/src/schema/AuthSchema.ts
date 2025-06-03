@@ -6,10 +6,10 @@ export const AdressSchema = z.object({
 });
 
 export const UserSchema = z.object({
-  user_id: z.string().uuid(),
+  user_id: z.string().uuid().optional(),
   name: z.string().min(1, "Name is required"),
   email: z.string().email(),
-  createAt: z.string(),
+  createdAt: z.string().optional(),
   password: z.string().min(6, "Password must be at least 6 characters"),
   // adress: AdressSchema,
 });
@@ -38,9 +38,8 @@ export const validateRegister = (input: unknown): RegisterType => {
   }
   return result.data;
 };
-
 export function validateLogin(data: unknown) {
-  const result = UserSchema.safeParse(data);
+  const result = LoginSchema.safeParse(data);
   if (!result.success) {
     throw result.error;
   }

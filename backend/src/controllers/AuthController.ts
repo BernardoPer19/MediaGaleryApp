@@ -2,6 +2,7 @@ import { validateLogin, validateRegister } from "../schema/AuthSchema";
 import { AuthService } from "../service/AuthServide";
 import { CookieOptions, Request, Response } from "express";
 import { createToken } from "../utils/AuthUtils";
+import { UserType } from "../types/AuthTypes";
 
 export class AuthController {
   static registerUser = async (req: Request, res: Response) => {
@@ -14,8 +15,9 @@ export class AuthController {
         bienvenida: `Bienvenido!! ${register}`,
       });
     } catch (error) {
+
       if (error instanceof Error) {
-        throw new Error("Error al registrarse", { cause: error.message });
+        throw new Error(error.message);
       }
     }
   };
@@ -29,7 +31,14 @@ export class AuthController {
         validatedData.password
       );
 
-      const token = createToken(user);
+      const userForToken: UserType = {
+        user_id: user.id,
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        createdAt: user.createdAt instanceof Date ? user.createdAt.toISOString() : user.createdAt,
+      };
+      const token = createToken(userForToken);
 
       const options: CookieOptions = {
         httpOnly: true,
@@ -49,6 +58,41 @@ export class AuthController {
       if (error instanceof Error) {
         throw new Error("Error al registrarse", { cause: error.message });
       }
+    }
+  };
+
+
+
+
+
+
+
+  static async logoutController(_req: Request, res: Response) {
+    res.clearCookie("access_token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
+    res.status(200).send({ message: "Sesión cerrada correctamente" });
+  }
+
+  static async protectedRoute(req: Request, res: Response) {
+    const user = req.user as UserType;
+
+    if (!user) {
+      res
+        .status(400)
+        .json({ message: "Cuenta no autorizada para esta accion" });
+    }
+    res.status(200).json({ message: "Usuario autorizado", user });
+  }
+
+  static getCurrentUser = (req: Request, res: Response) => {
+    try {
+      const user = req.user;
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener usuario actual" });
     }
   };
 }

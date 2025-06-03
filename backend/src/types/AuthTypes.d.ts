@@ -1,25 +1,16 @@
 export interface UserType {
-  id: string;
+  user_id: string;
   name: string;
   email: string;
   password: string;
-  createdAt: Date;
+  createdAt: string; // cambiar a string si viene así de la DB
 }
 
-export interface FavoriteType {
+export interface PhotoBase {
   id: string;
   userId: string;
   imageId: string;
   imageUrl: string;
-  title?: string;
-  createdAt: Date;
-}
-
-export interface SavedPhotoType {
-  id: string;
-  userId: string;
-  imageId: string;
-  imageUrl: string;
-  title?: string;
-  createdAt: Date;
+  title?: string | null;
+  createdAt?: Date;
 }

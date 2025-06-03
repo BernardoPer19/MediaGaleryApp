@@ -13,7 +13,6 @@ export class AuthService {
   }
 
   static async registerUser(user: RegisterType) {
-    try {
       const existingUser = await prisma.user.findFirst({
         where: { email: user.email },
       });
@@ -31,9 +30,6 @@ export class AuthService {
         },
       });
       return register;
-    } catch (error) {
-      throw new Error("Error al registrar");
-    }
   }
 
   static async LoginService(email: string, password: string) {
