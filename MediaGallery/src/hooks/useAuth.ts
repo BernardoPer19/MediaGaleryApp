@@ -13,10 +13,6 @@ export const useAuth = () => {
     const handleError = (context: string, error: any) => {
         console.error(`❌ Error en ${context}:`, error);
 
-        const message =
-            error?.response?.data?.message || error?.message || "Error desconocido";
-
-        toast.error(message);
     };
 
 

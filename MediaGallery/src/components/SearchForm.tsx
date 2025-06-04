@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useSearch } from "../context/SearchContext";
 
 function SearchForm() {
-  const { setQuery,query } = useSearch();
+  const { setQuery } = useSearch();
   const [input, setInput] = useState("");
-  console.log(input,query);
-  
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (input.trim()) {

@@ -15,7 +15,7 @@ function PhotoLists({ currentQuery }: PhotoListsProps) {
     hasNextPage,
     fetchNextPage,
     isFetchingNextPage,
-  } = useImagesFull(currentQuery); // 👈 Usamos el query dinámico
+  } = useImagesFull(currentQuery);
 
   const observerRef = useRef<HTMLDivElement | null>(null);
   const observerInstance = useRef<IntersectionObserver | null>(null);
