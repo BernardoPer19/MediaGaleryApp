@@ -19,6 +19,9 @@ export class AuthController {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
+      console.log(error.message);
+      throw new Error("a");
+       
     }
   };
 
@@ -56,7 +59,7 @@ export class AuthController {
         });
     } catch (error) {
       if (error instanceof Error) {
-        throw new Error("Error al registrarse", { cause: error.message });
+        throw new Error("Error al registrarse");
       }
     }
   };
@@ -89,10 +92,33 @@ export class AuthController {
 
   static getCurrentUser = (req: Request, res: Response) => {
     try {
-      const user = req.user;
-      res.json(user);
+      const user = req.user as UserType;
+      if (!user) {
+        res.status(401).json({ message: "Usuario no autenticado" });
+        return
+      }
+      res.status(200).json({ user });
     } catch (error) {
       res.status(500).json({ message: "Error al obtener usuario actual" });
+    }
+  };
+
+  static getProfileData = async (req: Request, res: Response) => {
+    try {
+      const user = req.user as UserType;
+      if (!user) {
+        res.status(401).json({ message: "Usuario no autenticado" });
+        return
+      }
+      // Aquí puedes agregar lógica para obtener más datos del perfil si es necesario
+      res.status(200).json({
+        user_id: user.user_id,
+        name: user.name,
+        email: user.email,
+        createdAt: user.createdAt,
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener datos del perfil" });
     }
   };
 }

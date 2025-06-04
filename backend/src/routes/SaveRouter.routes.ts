@@ -1,18 +1,19 @@
 import { Router } from "express";
 import { favoriteController, savedPhotoController } from "../service/photoInstances";
+import { verifyUser } from "../middlewares/VerifyRoute";
 
-const router = Router();
+const ActionPhoto = Router();
 
 // Rutas para SavedPhoto
-router.post("/saved", savedPhotoController.save);
-router.get("/saved", savedPhotoController.getAll);
-router.delete("/saved/:imageId", savedPhotoController.deleteOne);
-router.get("/saved/:imageId/isSaved", savedPhotoController.isSaved);
+ActionPhoto.post("/saved", verifyUser, savedPhotoController.save);
+ActionPhoto.get("/saved", verifyUser, savedPhotoController.getAll);
+ActionPhoto.delete("/saved/:imageId", verifyUser, savedPhotoController.deleteOne);
+ActionPhoto.get("/saved/:imageId/isSaved", verifyUser, savedPhotoController.isSaved);
 
 // Rutas para Favorite
-router.post("/favorite", favoriteController.save);
-router.get("/favorite", favoriteController.getAll);
-router.delete("/favorite/:imageId", favoriteController.deleteOne);
-router.get("/favorite/:imageId/isSaved", favoriteController.isSaved);
+ActionPhoto.post("/favorite", verifyUser, favoriteController.save);
+ActionPhoto.get("/favorite", verifyUser, favoriteController.getAll);
+ActionPhoto.delete("/favorite/:imageId", verifyUser, favoriteController.deleteOne);
+ActionPhoto.get("/favorite/:imageId/isSaved", verifyUser, favoriteController.isSaved);
 
-export default router;
+export default ActionPhoto;

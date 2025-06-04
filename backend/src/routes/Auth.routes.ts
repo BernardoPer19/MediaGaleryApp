@@ -13,4 +13,10 @@ AuthRouter.post('/login', AuthController.login);
 // Ruta para logout de usuario
 AuthRouter.post('/logout', AuthController.logoutController);
 
+// Ruta para obtener el usuario actual
+AuthRouter.get('/current-user', AuthController.getCurrentUser);
+
+// Ruta para obtener los datos del perfil
+AuthRouter.get('/profile', AuthController.getProfileData);
+
 export default AuthRouter;
