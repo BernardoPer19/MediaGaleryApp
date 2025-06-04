@@ -1,6 +1,6 @@
 import { useSearch } from "../context/SearchContext";
 import PhotoCard from "./PhotoCard";
-import Loader from "./Loader";
+import Loader from "./UI/Loader";
 import { useSearchImages } from "../hooks/useSearchImg";
 
 function SearchResults() {

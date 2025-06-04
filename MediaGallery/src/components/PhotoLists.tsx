@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import PhotoCard from "./PhotoCard";
-import Loader from "./Loader";
+import Loader from "./UI/Loader";
 import { useImagesFull } from "../hooks/useApi";
 
 interface PhotoListsProps {
