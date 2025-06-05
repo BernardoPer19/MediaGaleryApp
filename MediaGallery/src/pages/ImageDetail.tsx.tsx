@@ -1,31 +1,52 @@
 import { useParams } from "react-router-dom";
 import { useImage } from "../hooks/useUniqueImg";
 import { useState } from "react";
-import { Heart, Bookmark } from "lucide-react"; // Usa íconos modernos
+import {
+  Bookmark,
+  Link as LinkIcon,
+  Share2,
+  ExternalLink,
+  ChevronDown,
+} from "lucide-react";
+import { UserProfile } from "../components/UI/UserProfile";
+import { useShareDownload } from "../hooks/useShareDownload";
+import { useSave } from "../hooks/useSave";
+import { Toaster } from "sonner";
 
 function ImageDetail() {
   const { id } = useParams();
   const { data, isLoading, isError } = useImage(id!);
+  const { isSaved, toggleSave, isPending } = useSave(data); // <- le pasás la foto aquí
 
-  // Estados temporales hasta que conectes con backend
-  const [isFavorite, setIsFavorite] = useState(false);
-  const [inCollection, setInCollection] = useState(false);
+  const [shareOpen, setShareOpen] = useState(false);
+
+  const originalUrl = data?.urls.full;
+  const { copied, downloading, copyLink, share, download } = useShareDownload(
+    originalUrl ?? ""
+  );
 
   if (isLoading) return <p className="p-4">Cargando imagen...</p>;
   if (isError || !data)
     return <p className="p-4 text-red-500">Error al cargar la imagen</p>;
 
+  const imageUrl = data.urls.regular;
+
   return (
     <div className="flex flex-col md:flex-row gap-6 p-6 bg-white rounded-xl shadow-lg max-w-[1200px] m-auto">
-      {/* Imagen */}
+       <Toaster
+        theme="dark"
+        closeButton
+        position="top-right"
+      />
       <img
-        src={data.urls.regular}
+        src={imageUrl}
         alt={data.alt_description || "Imagen de Unsplash"}
         className="w-full md:w-[700px] h-[800px] rounded-lg object-cover"
       />
 
-      {/* Detalles */}
-      <div className="flex-1 flex flex-col gap-3 justify-center">
+      <div className="flex-1 flex flex-col gap-5 justify-center">
+        <UserProfile user={data} />
+
         <h1 className="text-2xl font-bold text-gray-800">
           {data.description || data.alt_description || "Sin descripción"}
         </h1>
@@ -35,12 +56,12 @@ function ImageDetail() {
           {data.height}px
         </p>
 
-        <p className="text-sm text-gray-600">
-          <span className="font-semibold">Color dominante:</span>{" "}
+        <p className="text-sm text-gray-600 flex items-center gap-2">
+          <span className="font-semibold">Color dominante:</span>
           <span
-            className="inline-block w-4 h-4 rounded-full border border-gray-300"
+            className="inline-block w-5 h-5 rounded-full border border-gray-300"
             style={{ backgroundColor: data.color }}
-          ></span>{" "}
+          />
           {data.color}
         </p>
 
@@ -53,53 +74,80 @@ function ImageDetail() {
           {new Date(data.created_at).toLocaleDateString("es-ES")}
         </p>
 
-        {/* Botones */}
-        <div className="flex gap-4 mt-4">
+        {/* Botones de acciones */}
+        <div className="flex gap-4">
           <button
-            onClick={() => setIsFavorite(!isFavorite)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-white transition ${
-              isFavorite ? "bg-red-600" : "bg-gray-700 hover:bg-red-500"
+            onClick={toggleSave}
+            disabled={isPending}
+            className={`flex items-center gap-2 px-5 py-2 rounded-md text-white transition ${
+              isSaved ? "bg-blue-600" : "bg-gray-700 hover:bg-blue-500"
             }`}
           >
-            <Heart size={18} />
-            {isFavorite ? "Favorito" : "Añadir a Favoritos"}
-          </button>
-
-          <button
-            onClick={() => setInCollection(!inCollection)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-md text-white transition ${
-              inCollection ? "bg-blue-600" : "bg-gray-700 hover:bg-blue-500"
-            }`}
-          >
-            <Bookmark size={18} />
-            {inCollection ? "Guardado" : "Guardar en Colección"}
+            <Bookmark size={20} />
+            {isSaved ? "Guardado" : "Guardar"}
           </button>
         </div>
 
-        {/* Usuario */}
-        <div className="mt-6 flex items-center gap-3">
-          <img
-            src={data.user.profile_image.medium}
-            alt={data.user.name}
-            className="w-12 h-12 rounded-full"
-          />
-          <div>
-            <p className="font-semibold text-gray-800">{data.user.name}</p>
+        {/* Compartir */}
+        <div className="relative inline-block text-left mt-4">
+          <div className="flex gap-5">
+            <button
+              onClick={() => setShareOpen(!shareOpen)}
+              className="inline-flex justify-center items-center gap-2 px-5 py-2 rounded-md bg-green-600 text-white hover:bg-green-700 transition"
+            >
+              <Share2 size={20} />
+              Compartir
+              <ChevronDown size={16} />
+            </button>
+
             <a
-              href={data.user.links.html}
+              href={originalUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 text-sm hover:underline"
+              className="flex items-center gap-2 px-5 py-2 rounded-md bg-gray-700 text-white hover:bg-gray-800 transition"
             >
-              Ver perfil en Unsplash
+              <ExternalLink size={20} />
+              Abrir original
             </a>
-            {data.user.instagram_username && (
-              <p className="text-sm text-gray-500">
-                @{data.user.instagram_username}
-              </p>
-            )}
           </div>
+
+          {shareOpen && (
+            <div
+              id="share-menu"
+              className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-10"
+            >
+              <div className="py-1">
+                <button
+                  onClick={copyLink}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div className="flex items-center gap-2">
+                    <LinkIcon size={16} />
+                    {copied ? "¡Copiado!" : "Copiar enlace"}
+                  </div>
+                </button>
+
+                <button
+                  onClick={share}
+                  className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                >
+                  <div className="flex items-center gap-2">
+                    <Share2 size={16} />
+                    Compartir con dispositivo
+                  </div>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
+
+        <button
+          onClick={download}
+          disabled={downloading}
+          className="w-full py-4 rounded-lg bg-green-400 hover:bg-green-500 text-white font-semibold text-lg shadow-md transition disabled:opacity-60 mt-6"
+        >
+          {downloading ? "Descargando..." : "Descargar imagen"}
+        </button>
       </div>
     </div>
   );

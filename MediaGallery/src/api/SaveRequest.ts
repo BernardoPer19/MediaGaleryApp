@@ -1,13 +1,14 @@
 import { AxiosError } from 'axios'
-import type { PhotoBase } from '../types/PhotoBase'
 import axios from './axios'
 import { toast } from 'sonner'
 
-export const saveRequest = async (data: PhotoBase) => {
+export const saveRequest = async (data: SaveData) => {
     try {
         const res = await axios.post("/saved", data)
         return res.data
     } catch (error) {
+        console.log(error);
+
         if (error instanceof AxiosError) {
             const backendMessage = error.response?.data?.message || error.message;
             toast.error(backendMessage);
