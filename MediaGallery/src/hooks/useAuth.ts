@@ -44,7 +44,7 @@ export const useAuth = () => {
     } = useMutation({
         mutationFn: loginRequest,
         onSuccess: (data) => {
-            handleSuccess(data.data.message);
+            handleSuccess(data.message);
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
         },
         onError: (error) => {

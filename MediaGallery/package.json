@@ -17,6 +17,7 @@
     "@tanstack/react-query-devtools": "^5.79.2",
     "autoprefixer": "^10.4.21",
     "axios": "^1.9.0",
+    "js-cookie": "^3.0.5",
     "lucide-react": "^0.511.0",
     "postcss": "^8.5.4",
     "react": "^19.1.0",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.2",
     "@types/react-router-dom": "^5.3.3",

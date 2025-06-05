@@ -1,10 +1,11 @@
-import React from "react";
 import PhotoLists from "../components/PhotoLists";
+import Hero from "../components/UI/Hero";
 
 function Home() {
   return (
     <>
-      <main >
+      <main>
+        <Hero />
         <PhotoLists currentQuery="featured" />;
       </main>
     </>

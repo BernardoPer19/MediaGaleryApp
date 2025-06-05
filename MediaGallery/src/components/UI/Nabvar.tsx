@@ -1,10 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useSearch } from "../../context/SearchContext";
+import { useAuthContext } from "../../context/AuthContext";
 
 function NavBar() {
   const navigate = useNavigate();
   const { setQuery } = useSearch();
+  const { isAuthenticated, logout, user } = useAuthContext();
+
   const [searchInput, setSearchInput] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -16,59 +19,98 @@ function NavBar() {
     setSearchInput("");
   };
 
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
+
   return (
-    <header className="flex items-center justify-between px-6 py-4 shadow-md bg-white sticky top-0 z-10">
-      <Link to="/" className="text-xl font-bold text-gray-800">
-        FreeLanceGram
-      </Link>
-
-      <nav className="space-x-4 text-sm font-medium text-gray-700">
-        <Link to="/" className="hover:text-blue-500">
-          Home
-        </Link>
-        <Link to="/topic/nature" className="hover:text-blue-500">
-          Nature
-        </Link>
-
-        <Link to="/topic/wallpapers" className="hover:text-blue-500">
-          Wallpapers
-        </Link>
-
-        <Link to="/topic/renderes-3D" className="hover:text-blue-500">
-          Renderes-3D
-        </Link>
-
-        <Link to="/topic/textures" className="hover:text-blue-500">
-          Textures
-        </Link>
-
-        <Link to="/topic/travel" className="hover:text-blue-500">
-          Travel
-        </Link>
-
-        <Link to="/topic/movies" className="hover:text-blue-500">
-          Movies
-        </Link>
-        <Link to="/topic/architect" className="hover:text-blue-500">
-          Architect
-        </Link>
-      </nav>
-
-      <form onSubmit={handleSubmit} className="flex items-center gap-2">
-        <input
-          type="text"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          placeholder="Search photos..."
-          className="border border-gray-300 rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 text-sm"
+    <header className="sticky top-0 z-20 bg-white shadow-md">
+      <div className="container mx-auto px-6 py-4 flex items-center justify-between">
+        {/* Logo */}
+        <Link
+          to="/"
+          className="text-2xl font-extrabold text-black hover:text-gray-700"
         >
-          Search
-        </button>
-      </form>
+          FreeLanceGram
+        </Link>
+
+        {/* Links */}
+        <nav className="hidden md:flex space-x-6 text-gray-900 font-medium text-sm">
+          <Link to="/" className="hover:text-gray-600 transition">
+            Home
+          </Link>
+          <Link to="/topic/nature" className="hover:text-gray-600 transition">
+            Nature
+          </Link>
+          <Link to="/topic/wallpapers" className="hover:text-gray-600 transition">
+            Wallpapers
+          </Link>
+          <Link to="/topic/renderes-3D" className="hover:text-gray-600 transition">
+            Renderes-3D
+          </Link>
+          <Link to="/topic/textures" className="hover:text-gray-600 transition">
+            Textures
+          </Link>
+          <Link to="/topic/travel" className="hover:text-gray-600 transition">
+            Travel
+          </Link>
+          <Link to="/topic/movies" className="hover:text-gray-600 transition">
+            Movies
+          </Link>
+          <Link to="/topic/architect" className="hover:text-gray-600 transition">
+            Architect
+          </Link>
+        </nav>
+
+        {/* Search + Auth Buttons */}
+        <div className="flex items-center space-x-4">
+          <form onSubmit={handleSubmit} className="flex items-center gap-2">
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Search photos..."
+              className="border border-black rounded px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+            />
+            <button
+              type="submit"
+              className="bg-black text-white px-3 py-1 rounded hover:bg-gray-800 text-sm transition"
+            >
+              Search
+            </button>
+          </form>
+
+          {isAuthenticated ? (
+            <>
+              <span className="hidden sm:inline text-sm text-black">
+                Hola, <strong>{user?.name}</strong>
+              </span>
+              <button
+                onClick={handleLogout}
+                className="bg-black hover:bg-gray-800 text-white px-3 py-1 rounded text-sm transition"
+              >
+                Cerrar sesión
+              </button>
+            </>
+          ) : (
+            <div className="space-x-3 text-sm font-medium">
+              <Link
+                to="/login"
+                className="px-3 py-1 rounded border border-black text-black hover:bg-black hover:text-white transition"
+              >
+                Iniciar sesión
+              </Link>
+              <Link
+                to="/register"
+                className="px-3 py-1 rounded bg-black text-white hover:bg-gray-800 transition"
+              >
+                Registrarse
+              </Link>
+            </div>
+          )}
+        </div>
+      </div>
     </header>
   );
 }

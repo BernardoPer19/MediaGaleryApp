@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../hooks/useAuth";
 import type { RegisterType } from "../../types/UserType";
 import { Mail, Lock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 type LoginData = Omit<RegisterType, "name">;
 
@@ -13,9 +14,16 @@ export default function LoginForm() {
   } = useForm<LoginData>();
 
   const { LoginMutate, isPedingLogin } = useAuth().login;
-
+  const navigate = useNavigate();
   const onSubmit = (data: LoginData) => {
-    LoginMutate(data);
+    LoginMutate(data, {
+      onSuccess: () => {
+        navigate("/profile");
+      },
+      onError: (error) => {
+        console.error("Error al iniciar sesión:", error);
+      },
+    });
   };
 
   return (

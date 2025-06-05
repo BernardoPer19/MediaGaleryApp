@@ -1,7 +1,8 @@
-import { useEffect, useRef, useCallback } from "react";
-import PhotoCard from "./PhotoCard";
-import Loader from "./UI/Loader";
+import { Loader } from "lucide-react";
 import { useImagesFull } from "../hooks/useApi";
+import PhotoCard from "./PhotoCard";
+import { useInfiniteScroll } from "../hooks/useIfiniteScroll";
+import Hero from "./UI/Hero";
 
 interface PhotoListsProps {
   currentQuery: string;
@@ -17,33 +18,7 @@ function PhotoLists({ currentQuery }: PhotoListsProps) {
     isFetchingNextPage,
   } = useImagesFull(currentQuery);
 
-  const observerRef = useRef<HTMLDivElement | null>(null);
-  const observerInstance = useRef<IntersectionObserver | null>(null);
-
-  const handleFetchNext = useCallback(() => {
-    if (hasNextPage) fetchNextPage();
-  }, [fetchNextPage, hasNextPage]);
-
-  useEffect(() => {
-    if (!observerRef.current) return;
-
-    if (observerInstance.current) observerInstance.current.disconnect();
-
-    observerInstance.current = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          handleFetchNext();
-        }
-      },
-      { threshold: 1 }
-    );
-
-    observerInstance.current.observe(observerRef.current);
-
-    return () => {
-      observerInstance.current?.disconnect();
-    };
-  }, [handleFetchNext]);
+  const observerRef = useInfiniteScroll({ fetchNextPage, hasNextPage });
 
   return (
     <section
@@ -51,6 +26,9 @@ function PhotoLists({ currentQuery }: PhotoListsProps) {
       aria-live="polite"
       aria-busy={isLoading || isFetchingNextPage}
     >
+
+
+
       {data?.pages.map((page) =>
         page.results.map((img) => (
           <div key={img.id} className="break-inside-avoid">
