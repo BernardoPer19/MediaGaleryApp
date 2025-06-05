@@ -21,7 +21,7 @@ export class AuthController {
       }
       console.log(error.message);
       throw new Error("a");
-       
+
     }
   };
 
@@ -45,7 +45,7 @@ export class AuthController {
 
       const options: CookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: false,
         sameSite: "lax",
         maxAge: 24 * 60 * 60 * 1000,
       };
@@ -92,17 +92,13 @@ export class AuthController {
 
   static getCurrentUser = (req: Request, res: Response) => {
     try {
-      const user = req.user as UserType;
-      if (!user) {
-        res.status(401).json({ message: "Usuario no autenticado" });
-        return
-      }
-      res.status(200).json({ user });
+      const user = req.user;
+
+      res.json(user);
     } catch (error) {
       res.status(500).json({ message: "Error al obtener usuario actual" });
     }
   };
-
   static getProfileData = async (req: Request, res: Response) => {
     try {
       const user = req.user as UserType;
