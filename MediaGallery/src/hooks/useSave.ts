@@ -7,9 +7,11 @@ export const useSave = (photo?: PhotoBase) => {
     const queryClient = useQueryClient();
     const { user } = useAuthContext();
 
-    const { data: savedItems, isLoading } = useQuery<PhotoBase[]>({
-        queryKey: ["saved"],
+
+    const { data: savedItems, isLoading } = useQuery<SaveData[]>({
+        queryKey: ['saved'],
         queryFn: savedRequest,
+        enabled: !!user,  // para evitar llamada si no hay usuario logueado
     });
 
     const isSaved = photo ? savedItems?.some(item => item.id === photo.id) ?? false : false;
@@ -60,8 +62,9 @@ export const useSave = (photo?: PhotoBase) => {
     };
 
     return {
-        isSaved,
+        savedItems,
         isLoading,
+        isSaved,
         toggleSave,
         isPending: isSaving || isUnsaving,
         saveError,

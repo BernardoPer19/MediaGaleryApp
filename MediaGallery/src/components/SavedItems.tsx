@@ -1,17 +1,22 @@
-function SavedItems() {
-  // Aquí podrías usar React Query para traer guardados reales
-  const saved = ["Propuesta A", "Post B"]; // Temporal
+function SavedItems({savedItems}) {
 
   return (
     <div className="bg-white rounded-xl  p-5">
-      <h3 className="text-lg font-semibold text-slate-800 mb-3">Tus guardadas</h3>
-      {saved.length === 0 ? (
-        <p className="text-slate-500">Aún no tienes elementos guardados.</p>
+      <h3 className="text-lg font-semibold text-slate-800 mb-3">
+        Tus guardadas
+      </h3>
+      {savedItems.length === 0 ? (
+        <p>No tienes fotos guardadas aún.</p>
       ) : (
-        <ul className="space-y-2">
-          {saved.map((item, i) => (
-            <li key={i} className="bg-slate-100 rounded px-3 py-2 text-slate-700">
-              {item}
+        <ul>
+          {savedItems.map((item) => (
+            <li key={item.imageId}>
+              <img
+                src={item.imageUrl}
+                alt={item.title || "Imagen guardada"}
+                width={150}
+              />
+              <p>{item.title}</p>
             </li>
           ))}
         </ul>

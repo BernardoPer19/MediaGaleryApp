@@ -43,10 +43,16 @@ function NavBar() {
           <Link to="/topic/nature" className="hover:text-gray-600 transition">
             Nature
           </Link>
-          <Link to="/topic/wallpapers" className="hover:text-gray-600 transition">
+          <Link
+            to="/topic/wallpapers"
+            className="hover:text-gray-600 transition"
+          >
             Wallpapers
           </Link>
-          <Link to="/topic/renderes-3D" className="hover:text-gray-600 transition">
+          <Link
+            to="/topic/renderes-3D"
+            className="hover:text-gray-600 transition"
+          >
             Renderes-3D
           </Link>
           <Link to="/topic/textures" className="hover:text-gray-600 transition">
@@ -58,7 +64,10 @@ function NavBar() {
           <Link to="/topic/movies" className="hover:text-gray-600 transition">
             Movies
           </Link>
-          <Link to="/topic/architect" className="hover:text-gray-600 transition">
+          <Link
+            to="/topic/architect"
+            className="hover:text-gray-600 transition"
+          >
             Architect
           </Link>
         </nav>
@@ -86,6 +95,12 @@ function NavBar() {
               <span className="hidden sm:inline text-sm text-black">
                 Hola, <strong>{user?.name}</strong>
               </span>
+              <Link
+                to="/profile"
+                className="text-sm text-blue-600 hover:underline hidden sm:inline"
+              >
+                Ver perfil
+              </Link>
               <button
                 onClick={handleLogout}
                 className="bg-black hover:bg-gray-800 text-white px-3 py-1 rounded text-sm transition"
