@@ -19,8 +19,7 @@ export class AuthController {
       if (error instanceof Error) {
         throw new Error(error.message);
       }
-      console.log(error.message);
-      throw new Error("a");
+      throw new Error("Error desconocido al registrarse");
 
     }
   };
