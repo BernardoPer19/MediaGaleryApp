@@ -2,7 +2,6 @@ import { Loader } from "lucide-react";
 import { useImagesFull } from "../hooks/useApi";
 import PhotoCard from "./PhotoCard";
 import { useInfiniteScroll } from "../hooks/useIfiniteScroll";
-import Hero from "./UI/Hero";
 
 interface PhotoListsProps {
   currentQuery: string;
@@ -17,6 +16,7 @@ function PhotoLists({ currentQuery }: PhotoListsProps) {
     fetchNextPage,
     isFetchingNextPage,
   } = useImagesFull(currentQuery);
+  console.log(data);
 
   const observerRef = useInfiniteScroll({ fetchNextPage, hasNextPage });
 
@@ -26,11 +26,8 @@ function PhotoLists({ currentQuery }: PhotoListsProps) {
       aria-live="polite"
       aria-busy={isLoading || isFetchingNextPage}
     >
-
-
-
       {data?.pages.map((page) =>
-        page.results.map((img) => (
+        page.results.map((img: any) => (
           <div key={img.id} className="break-inside-avoid">
             <PhotoCard img={img} />
           </div>

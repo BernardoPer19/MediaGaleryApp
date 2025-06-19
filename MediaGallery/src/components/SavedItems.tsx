@@ -1,5 +1,10 @@
-function SavedItems({savedItems}) {
+import type { SaveData } from "../types/PhotoBase";
 
+interface Props {
+  savedItems: SaveData;
+}
+
+function SavedItems({ savedItems }: Props) {
   return (
     <div className="bg-white rounded-xl  p-5">
       <h3 className="text-lg font-semibold text-slate-800 mb-3">
@@ -9,7 +14,7 @@ function SavedItems({savedItems}) {
         <p>No tienes fotos guardadas aún.</p>
       ) : (
         <ul>
-          {savedItems.map((item) => (
+          {savedItems.map((item: any) => (
             <li key={item.imageId}>
               <img
                 src={item.imageUrl}

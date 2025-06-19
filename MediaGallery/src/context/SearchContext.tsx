@@ -27,7 +27,21 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
 export const SearchProvider: FC<ChildrenType> = ({ children }) => {
   const [query, setQuery] = useState<string>("");
 
-  const { data, isLoading, error, isError } = useImagesFull(query);
+  const {
+    data: infiniteData,
+    isLoading,
+    error,
+    isError,
+  } = useImagesFull(query);
+
+  // Merge all pages' results into a single UnsplashSearchResponse
+  const mergedData: UnsplashSearchResponse | undefined = infiniteData
+    ? {
+        total: infiniteData.pages[0]?.total ?? 0,
+        total_pages: infiniteData.pages[0]?.total_pages ?? 0,
+        results: infiniteData.pages.flatMap((page) => page.results),
+      }
+    : undefined;
 
   return (
     <SearchContext.Provider
@@ -35,7 +49,7 @@ export const SearchProvider: FC<ChildrenType> = ({ children }) => {
         query,
         isError,
         setQuery,
-        data,
+        data: mergedData,
         isLoading,
         error:
           typeof error === "string"

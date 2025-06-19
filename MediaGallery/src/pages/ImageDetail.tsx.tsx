@@ -16,7 +16,7 @@ import { Toaster } from "sonner";
 function ImageDetail() {
   const { id } = useParams();
   const { data, isLoading, isError } = useImage(id!);
-  const { isSaved, toggleSave, isPending } = useSave(data); // <- le pasás la foto aquí
+  const { isSaved, toggleSave, isPending } = useSave(data); 
 
   const [shareOpen, setShareOpen] = useState(false);
 

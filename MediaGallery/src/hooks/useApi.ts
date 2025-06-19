@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, type InfiniteData } from "@tanstack/react-query";
 import { getImagesFull, type UnsplashSearchResponse } from "../api/apiRequest";
 
 export const useImagesFull = (queryVariable: string) => {
@@ -11,12 +11,13 @@ export const useImagesFull = (queryVariable: string) => {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery<
-    UnsplashSearchResponse,
-    unknown,
-    UnsplashSearchResponse,
-    ["imagesFull", string]
+    UnsplashSearchResponse,     // tipo de cada página
+    unknown,                    // tipo de error
+    InfiniteData<UnsplashSearchResponse>, // tipo completo de "data"
+    ["imagesFull", string],
+    number
   >({
-    queryKey: ["imagesFull", queryVariable],  // queryKey dinámico según búsqueda
+    queryKey: ["imagesFull", queryVariable],
     queryFn: ({ pageParam = 1 }) => getImagesFull(queryVariable, pageParam),
     getNextPageParam: (lastPage, allPages) => {
       const nextPage = allPages.length + 1;

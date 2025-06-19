@@ -1,6 +1,7 @@
 import { AxiosError } from 'axios'
 import axios from './axios'
 import { toast } from 'sonner'
+import type { SaveData } from '../types/PhotoBase'
 
 export const saveRequest = async (data: SaveData) => {
     try {
@@ -23,7 +24,7 @@ export const saveRequest = async (data: SaveData) => {
 export const savedRequest = async () => {
     try {
         const res = await axios.get('/saved');
-         toast.success("La imagen fue gaurdad con exito");
+        toast.success("La imagen fue gaurdad con exito");
         return res.data;
     } catch (error) {
         console.log(error);

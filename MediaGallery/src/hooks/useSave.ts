@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { PhotoBase, SaveData } from "../types/PhotoBase";
+import type { SaveData } from "../types/PhotoBase";
 import { deleteSaveRequest, savedRequest, saveRequest } from "../api/SaveRequest";
 import { useAuthContext } from "../context/AuthContext";
 
-export const useSave = (photo?: PhotoBase) => {
+export const useSave = (photo?: SaveData) => {
     const queryClient = useQueryClient();
     const { user } = useAuthContext();
 

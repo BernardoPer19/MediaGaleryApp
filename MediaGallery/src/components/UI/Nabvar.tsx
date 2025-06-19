@@ -32,7 +32,7 @@ function NavBar() {
           to="/"
           className="text-2xl font-extrabold text-black hover:text-gray-700"
         >
-          FreeLanceGram
+          MediaGallery
         </Link>
 
         {/* Links */}
