@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc && tsc-alias",
+   "build": "tsc && node fix-imports.js",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts"
   },
