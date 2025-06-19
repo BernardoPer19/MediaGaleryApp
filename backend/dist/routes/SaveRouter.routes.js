@@ -1,0 +1,15 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const photoInstances_1 = require("../service/photoInstances");
+const VerifyRoute_1 = require("../middlewares/VerifyRoute");
+const ActionPhoto = (0, express_1.Router)();
+ActionPhoto.post("/saved", VerifyRoute_1.verifyUser, photoInstances_1.savedPhotoController.save);
+ActionPhoto.get("/saved", VerifyRoute_1.verifyUser, photoInstances_1.savedPhotoController.getAll);
+ActionPhoto.delete("/saved/:imageId", VerifyRoute_1.verifyUser, photoInstances_1.savedPhotoController.deleteOne);
+ActionPhoto.get("/saved/:imageId/isSaved", VerifyRoute_1.verifyUser, photoInstances_1.savedPhotoController.isSaved);
+ActionPhoto.post("/favorite", VerifyRoute_1.verifyUser, photoInstances_1.favoriteController.save);
+ActionPhoto.get("/favorite", VerifyRoute_1.verifyUser, photoInstances_1.favoriteController.getAll);
+ActionPhoto.delete("/favorite/:imageId", VerifyRoute_1.verifyUser, photoInstances_1.favoriteController.deleteOne);
+ActionPhoto.get("/favorite/:imageId/isSaved", VerifyRoute_1.verifyUser, photoInstances_1.favoriteController.isSaved);
+exports.default = ActionPhoto;
